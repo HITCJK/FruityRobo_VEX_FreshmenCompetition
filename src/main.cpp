@@ -1,11 +1,5 @@
 #include "../include/main.h" // ../ 表示返回上一级目录
 
-// 定义单个电机对象（假设电机端口已知）
-pros::Motor left_front_wheel(1);  // 左前轮电机，端口1
-pros::Motor left_rear_wheel(2);   // 左后轮电机，端口2
-pros::Motor right_front_wheel(3); // 右前轮电机，端口3
-pros::Motor right_rear_wheel(4);  // 右后轮电机，端口4
-
 // 创建电机组对象（左侧和右侧电机组）
 pros::MotorGroup left_wheels({left_front_wheel, left_rear_wheel});    // 左侧电机组
 pros::MotorGroup right_wheels({right_front_wheel, right_rear_wheel}); // 右侧电机组

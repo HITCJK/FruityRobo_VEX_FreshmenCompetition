@@ -10,8 +10,9 @@ double current_x = 0.0;
 double current_y = 0.0;
 double current_heading = 0.0;
 
-pros::Motor hooker_motor_1(5); // 假设端口5
-pros::Motor hooker_motor_2(6); // 假设端口6
+// 测试端口
+pros::Motor hooker_motor_1(5); 
+pros::Motor hooker_motor_2(6); 
 
 // LCD按钮回调函数
 void on_center_button()
@@ -104,7 +105,7 @@ void opcontrol()
         int turn = master.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X); // 左右方向（右摇杆X轴）
 
         dir = -dir; 
-        
+
         // 对于摇杆的微小输入，忽略它们
         if (abs(dir) < 10) dir = 0; // 前后方向
         if (abs(turn) < 10) turn = 0; // 转向方向

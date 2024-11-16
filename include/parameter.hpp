@@ -4,3 +4,7 @@
 #define RIGHT_FRONT_WHEELS_PORT 10
 #define LEFT_REAR_WHEELS_PORT 11
 #define RIGHT_REAR_WHEELS_PORT 20
+
+// 创建IMU传感器对象
+#define IMU_PORT 1
+

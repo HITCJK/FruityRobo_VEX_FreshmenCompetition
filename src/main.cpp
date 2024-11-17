@@ -110,8 +110,8 @@ void opcontrol()
         // ------------------------------- 手柄控制车辆 ------------------------------------
         int power = master.get_analog(ANALOG_LEFT_Y); // -127 ~ 127
         int turn = master.get_analog(ANALOG_RIGHT_X);
-        int left = power;
-        int right = power;
+        int left = power + turn;
+        int right = power - turn;
 
         left_wheels.move(left);
         right_wheels.move(right);

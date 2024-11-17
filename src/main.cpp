@@ -8,10 +8,7 @@
 
 #include <algorithm>
 
-// 定义车辆的当前位置和方向
-double current_x = 0.0;
-double current_y = 0.0;
-double current_heading = 0.0;
+
 
 // LCD按钮回调函数
 void on_center_button()
@@ -55,7 +52,6 @@ void autonomous()
     // 初始化
     const double MAX_VELOCITY = 200.0; // 最大速度
     uint32_t last_time = pros::millis();
-    double current_x = 0.0, current_y = 0.0, current_heading = 0.0;
 
     // 预定路径和任务
     std::vector<std::pair<double, double>> path = {
@@ -71,12 +67,11 @@ void autonomous()
 
         while (true)
         {
-            // 获取传感器数据
+            // ------------------------------- 更新车辆位置 ------------------------------------
             uint32_t current_time = pros::millis();
             double delta_time = (current_time - last_time) / 1000.0;
             last_time = current_time;
 
-            // 更新车辆位置
             update_position(imu_sensor, delta_time);
 
             // 计算误差
@@ -126,12 +121,37 @@ void opcontrol()
     while (true)
     {
         // ------------------------------- 手柄按钮 ------------------------------------
-        control_chassis(master, left_wheels, right_wheels, dir, turn, left_speed, right_speed);
+        control_picker(master, picker_motor, l1_pressed, l2_pressed);
         control_lifting(master, lifting_motor_1, lifting_motor_2, r1_pressed, r2_pressed);
 
         // ------------------------------- 手柄控制车辆 ------------------------------------
-        control_chassis(master, left_wheels, right_wheels, dir, turn, left_speed, right_speed);
+        dir = master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);   // 前后方向（左摇杆Y轴）
+        turn = master.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X); // 左右方向（右摇杆X轴）
+        // control_chassis(master, left_wheels, right_wheels, dir, turn, left_speed, right_speed);
+        dir = -dir; 
+        // 对于摇杆的微小输入，忽略它们
+        if (abs(dir) < 10) dir = 0; // 前后方向
+        if (abs(turn) < 10) turn = 0; // 转向方向
 
+        if (abs(dir) > 100) {
+            left_speed = left_speed * 1.2;   // 增加左侧电机加速
+            right_speed = right_speed * 1.2; // 增加右侧电机加速
+        } else if (abs(dir) > 50) {
+            left_speed = left_speed * 1.1;   // 中等加速
+            right_speed = right_speed * 1.1; // 中等加速
+        }
+
+        if (abs(turn) > 0) {
+            left_speed = dir - turn * 1.5;  // 左侧电机转速更高
+            right_speed = dir + turn * 1.5; // 右侧电机转速更低
+        }
+
+        if (abs(turn) > 50) {
+            left_speed = dir - turn * 2.0;  // 左侧电机转速更高
+            right_speed = dir + turn * 2.0; // 右侧电机转速更低
+        }
+        left_wheels.move_velocity(left_speed);
+        right_wheels.move_velocity(right_speed);
         // ------------------------------- 更新车辆位置 ------------------------------------
         uint32_t current_time = pros::millis();
         double delta_time = (current_time - last_time) / 1000.0; // 时间差，单位：秒

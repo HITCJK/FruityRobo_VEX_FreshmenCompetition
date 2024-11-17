@@ -9,14 +9,11 @@ void control_lifting(pros::Controller &master, pros::Motor &lifting_motor_1, pro
     if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_R1))
     {
         r1_pressed = !r1_pressed;
-        // 切换电机方向
-        lifting_motor_1.set_reversed(!lifting_motor_1.is_reversed());
-        lifting_motor_2.set_reversed(!lifting_motor_2.is_reversed());
-
+        
         if (r1_pressed)
         {
-            lifting_motor_1.move_velocity(MAX_VELOCITY); 
-            lifting_motor_2.move_velocity(MAX_VELOCITY); 
+            lifting_motor_1.move_velocity(-MAX_VELOCITY); 
+            lifting_motor_2.move_velocity(-MAX_VELOCITY); 
         }
         else
         {
@@ -28,8 +25,7 @@ void control_lifting(pros::Controller &master, pros::Motor &lifting_motor_1, pro
     {
         r2_pressed = !r2_pressed;
         // 扣环方向
-        lifting_motor_1.set_reversed(true);
-        lifting_motor_2.set_reversed(true);
+
         if (r2_pressed)
         {
             lifting_motor_1.move_velocity(MAX_VELOCITY); 

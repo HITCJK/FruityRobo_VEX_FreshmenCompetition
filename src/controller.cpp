@@ -1,4 +1,4 @@
-#include "controller.hpp"
+
 #include "main.h"
 
 const int MAX_VELOCITY = 200; // 最大速度（单位：电机最大速度）
@@ -15,8 +15,8 @@ void control_lifting(pros::Controller &master, pros::Motor &lifting_motor_1, pro
 
         if (r1_pressed)
         {
-            lifting_motor_1.move_velocity(MAX_VELOCITY); // 设置速度为100
-            lifting_motor_2.move_velocity(MAX_VELOCITY); // 设置速度为100
+            lifting_motor_1.move_velocity(MAX_VELOCITY); 
+            lifting_motor_2.move_velocity(MAX_VELOCITY); 
         }
         else
         {
@@ -32,8 +32,8 @@ void control_lifting(pros::Controller &master, pros::Motor &lifting_motor_1, pro
         lifting_motor_2.set_reversed(true);
         if (r2_pressed)
         {
-            lifting_motor_1.move_velocity(MAX_VELOCITY); // 设置速度为100
-            lifting_motor_2.move_velocity(MAX_VELOCITY); // 设置速度为100
+            lifting_motor_1.move_velocity(MAX_VELOCITY); 
+            lifting_motor_2.move_velocity(MAX_VELOCITY); 
         }
         else
         {

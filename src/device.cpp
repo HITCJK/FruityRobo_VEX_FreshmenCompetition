@@ -1,7 +1,7 @@
 
 #include "device.hpp"
 #include "main.h"
-#include "parameter.hpp"
+
 
 
 // 车轮
@@ -16,7 +16,7 @@ pros::MotorGroup right_wheels({right_front_wheel, right_rear_wheel});
 pros::Imu imu_sensor(IMU_PORT);
 
 // 手柄
-pros::Controller master(pros::E_CONTROLLER_MASTER); // 创建控制器对象
+pros::Controller master(pros::E_CONTROLLER_MASTER);
 
 // 吃环结构
 pros::Motor picker_motor(PICKER_MOTOR_PORT);

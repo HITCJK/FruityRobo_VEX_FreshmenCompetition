@@ -1,15 +1,26 @@
 #pragma once
 #include "main.h"
 
-// 声明电机变量
+// 车轮
 extern pros::Motor left_front_wheel;
 extern pros::Motor right_front_wheel;
 extern pros::Motor left_rear_wheel;
 extern pros::Motor right_rear_wheel;
+extern pros::MotorGroup left_wheels;
+extern pros::MotorGroup right_wheels;
 
-
+// 惯性传感器
 extern pros::Imu imu_sensor;
 
-// pros::Controller master(pros::E_CONTROLLER_MASTER); // 创建控制器对象
+// 手柄
 extern pros::Controller master;
 
+// 抬升、扣环结构
+extern pros::Motor lifting_motor_1;
+extern pros::Motor lifting_motor_2;
+
+// 吃环结构
+extern pros::Motor picker_motor;
+
+// 气动结构
+extern pros::Motor pneumatic_motor;

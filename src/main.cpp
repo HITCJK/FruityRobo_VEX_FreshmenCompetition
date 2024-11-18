@@ -115,6 +115,18 @@ void opcontrol()
 
         left_wheels.move(left);
         right_wheels.move(right);
+
+        // 
+        pros::ADIDigitalOut pneumatic(PNEUMATIC_PORT);
+        while (true) {
+            // 激活气动装置
+            pneumatic.set_value(true);
+            pros::delay(1000); // 等待1秒
+
+            // 关闭气动装置
+            pneumatic.set_value(false);
+            pros::delay(1000); // 等待1秒
+        }
         // ------------------------------- 更新车辆位置 ------------------------------------
         // uint32_t current_time = pros::millis();
         // double delta_time = (current_time - last_time) / 1000.0; // 时间差，单位：秒

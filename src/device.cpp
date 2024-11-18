@@ -26,4 +26,4 @@ pros::Motor lifting_motor_1(LIFTING_MOTOR_1_PORT);
 pros::Motor lifting_motor_2(LIFTING_MOTOR_2_PORT);
 
 // 气动结构
-pros::Motor pneumatic_motor(PNEUMATIC_MOTOR_PORT);
+pros::Motor pneumatic(PNEUMATIC_PORT);

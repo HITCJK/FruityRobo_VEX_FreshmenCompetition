@@ -16,4 +16,4 @@
 #define LIFTING_MOTOR_2_PORT 8
 
 // 气动结构
-#define PNEUMATIC_MOTOR_PORT 7
+#define PNEUMATIC_PORT 7

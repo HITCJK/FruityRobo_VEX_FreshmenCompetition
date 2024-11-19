@@ -1,4 +1,5 @@
 #include "main.h"
+#include "device.hpp"
 
 #include <algorithm>
 
@@ -38,75 +39,28 @@ void competition_initialize()
 
 void autonomous()
 {
-    // // 初始化
-    // const double MAX_VELOCITY = 200.0; // 最大速度
-    // uint32_t last_time = pros::millis();
-
-    // // 预定路径和任务
-    // std::vector<std::pair<double, double>> path = {
-    //     {1.0, 0.0}, // 向前移动1米
-    //     {1.0, 1.0}, // 向右移动1米
-    //     {0.0, 1.0}  // 向后移动1米
-    // };
-
-    // for (const auto &target : path)
-    // {
-    //     double target_x = target.first;
-    //     double target_y = target.second;
-
-    //     while (true)
-    //     {
-    //         // ------------------------------- 更新车辆位置 ------------------------------------
-    //         uint32_t current_time = pros::millis();
-    //         double delta_time = (current_time - last_time) / 1000.0;
-    //         last_time = current_time;
-
-    //         update_position(imu_sensor, delta_time);
-
-    //         // 计算误差
-    //         double error_x = target_x - current_x;
-    //         double error_y = target_y - current_y;
-
-    //         // 简单的比例控制器
-    //         double kP = 1.0;
-    //         double left_speed = kP * error_x - kP * error_y;
-    //         double right_speed = kP * error_x + kP * error_y;
-
-    //         left_wheels.move_velocity(std::clamp(left_speed, -MAX_VELOCITY, MAX_VELOCITY));
-    //         right_wheels.move_velocity(std::clamp(right_speed, -MAX_VELOCITY, MAX_VELOCITY));
-
-    //         // 判断是否到达目标点
-    //         if (std::abs(error_x) < 0.1 && std::abs(error_y) < 0.1)
-    //         {
-    //             break;
-    //         }
-
-    //         pros::delay(20);
-    //     }
-    // }
-
-    // // 停止电机
-    // left_wheels.move_velocity(0);
-    // right_wheels.move_velocity(0);
 }
 
 // 手动赛模式
 void opcontrol()
 {
-
-    uint32_t last_time = pros::millis();
-
     bool r1_pressed = false; // R1 按键状态变量
     bool r2_pressed = false; // R2 按键状态变量
-    bool l1_pressed = false; // L1 按键状态变量
+    bool pneumatic_state = false;
     bool l2_pressed = false; // L2 按键状态变量
+
+    // imu_sensor.reset(); // 重置IMU传感器
+    left_front_wheel.tare_position();  // 重置左前电机编码器
+    right_front_wheel.tare_position(); // 重置右前电机编码器
+    left_rear_wheel.tare_position();   // 重置左后电机编码器
+    right_rear_wheel.tare_position();  // 重置右后电机编码器
 
     while (true)
     {
         // ------------------------------- 手柄按钮 ------------------------------------
-        control_picker(master, picker_motor, l1_pressed, l2_pressed);
+        control_picker(master, picker_motor, l2_pressed);
         control_lifting(master, lifting_motor_1, lifting_motor_2, r1_pressed, r2_pressed);
-
+        control_pneumatic(master, pneumatic, pneumatic_state);
         // ------------------------------- 手柄控制车辆 ------------------------------------
         int power = master.get_analog(ANALOG_LEFT_Y); // -127 ~ 127
         int turn = master.get_analog(ANALOG_RIGHT_X);
@@ -116,28 +70,11 @@ void opcontrol()
         left_wheels.move(left);
         right_wheels.move(right);
 
-        // 
-        pros::ADIDigitalOut pneumatic(PNEUMATIC_PORT);
-        while (true) {
-            // 激活气动装置
-            pneumatic.set_value(true);
-            pros::delay(1000); // 等待1秒
-
-            // 关闭气动装置
-            pneumatic.set_value(false);
-            pros::delay(1000); // 等待1秒
-        }
         // ------------------------------- 更新车辆位置 ------------------------------------
-        // uint32_t current_time = pros::millis();
-        // double delta_time = (current_time - last_time) / 1000.0; // 时间差，单位：秒
-        // last_time = current_time;
-
-        // update_position(imu_sensor, delta_time);
+        update_position();
 
         // ------------------------------- 显示信息 ------------------------------------
-        // pros::lcd::print(3, "Left Y: %d, Right X: %d", dir, turn);
-        // pros::lcd::print(4, "X: %f, Y: %f, Heading: %f", current_x, current_y, current_heading);
-        // pros::lcd::print(5, "Left Speed: %d, Right Speed: %d", left_speed, right_speed);
+        pros::lcd::print(5, "气动装置: %d", pneumatic_state);
 
         // ------------------------------- 等待20ms ------------------------------------
         pros::delay(20);

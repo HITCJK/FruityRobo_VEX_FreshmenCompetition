@@ -23,7 +23,7 @@ pros::Motor picker_motor(PICKER_MOTOR_PORT);
 
 // 抬升、扣环结构
 pros::Motor lifting_motor_1(LIFTING_MOTOR_1_PORT);
-pros::Motor lifting_motor_2(LIFTING_MOTOR_2_PORT);
+pros::Motor lifting_motor_2(LIFTING_MOTOR_2_PORT,true);
 
 // 气动结构
-pros::Motor pneumatic(PNEUMATIC_PORT);
+pros::ADIDigitalOut pneumatic(PNEUMATIC_PORT,false);

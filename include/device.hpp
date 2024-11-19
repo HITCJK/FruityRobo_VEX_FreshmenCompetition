@@ -23,4 +23,4 @@ extern pros::Motor lifting_motor_2;
 extern pros::Motor picker_motor;
 
 // 气动结构
-extern pros::Motor pneumatic;
+extern pros::ADIDigitalOut pneumatic;

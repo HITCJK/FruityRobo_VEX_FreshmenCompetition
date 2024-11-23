@@ -19,7 +19,7 @@
 #define PNEUMATIC_PORT 'h'
 
 // PID参数
-#define KP_REVOLVE 6
+#define KP_REVOLVE 2
 #define KI_REVOLVE 0
 #define KD_REVOLVE 0
 

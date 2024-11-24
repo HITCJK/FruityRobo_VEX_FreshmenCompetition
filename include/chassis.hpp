@@ -1,4 +1,5 @@
 #pragma once
+#include "chassis.hpp"
 #include "main.h"
 
 class PID
@@ -16,6 +17,7 @@ class PID
     double max_output_;     // 最大输出值
     double previous_error_; // 上一次误差
     double integral_;       // 积分值
+    double previous_derivative_; // 上一次微分
 };
 
 extern PID revolve_pid;
@@ -25,3 +27,6 @@ extern PID move_pid;
 void revolve(double setpoint);
 
 void move(double setpoint);
+
+extern PID revolve_pid_test;
+void revolve_test(double setpoint);

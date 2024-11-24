@@ -47,6 +47,7 @@
 #include "position.hpp"
 #include "pros/motors.hpp"
 #include "parameter.hpp"
+#include "serial.hpp"
 #include <cmath>
 
 

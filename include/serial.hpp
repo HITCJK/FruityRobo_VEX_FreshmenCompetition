@@ -2,5 +2,4 @@
 
 #include "main.h"
 
-
-// void update_position();
+void read_serial_data();

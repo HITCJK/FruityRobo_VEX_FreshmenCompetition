@@ -76,10 +76,6 @@ void opcontrol()
         {
             revolve(90);
         }
-        if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y))
-        {
-            revolve_test(90);
-        }
         pros::lcd::print(5, "current_heading: %f", imu_sensor.get_rotation());
 
         // ------------------------------- 手柄控制车辆 ------------------------------------

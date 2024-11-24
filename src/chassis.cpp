@@ -59,10 +59,11 @@ PID move_pid(KP_MOVE, KI_MOVE, KD_MOVE, LOOP_PERIOD, MAXIMUM_MOTOR_SPEED);
 
 void revolve(double setpoint)
 {
-    imu_sensor.tare_rotation(); // 重置IMU传感器的偏航角
-    revolve_pid.reset();        // 重置PID控制器
+    revolve_pid.reset(); // 重置PID控制器
+    double current_heading = imu_sensor.get_rotation();
+    setpoint = setpoint + imu_sensor.get_rotation();
 
-    const double tolerance = 1;    // 允许的误差范围
+    const double tolerance = 1;      // 允许的误差范围
     const int timeout = 5000;        // 超时时间，单位为毫秒
     int start_time = pros::millis(); // 记录开始时间
 
@@ -72,10 +73,18 @@ void revolve(double setpoint)
         pros::lcd::print(3, "current_heading: %f", imu_sensor.get_rotation());
 
         // 获取当前旋转角
-        double current_heading = imu_sensor.get_rotation();
+        current_heading = imu_sensor.get_rotation();
 
         // 计算旋转角误差
-        double error = setpoint - current_heading;
+        double error = fmod((setpoint - current_heading), 360.0);
+        if (error > 180)
+        {
+            error -= 360;
+        }
+        else if (error < -180)
+        {
+            error += 360;
+        }
 
         // 如果误差在允许范围内，退出循环
         if (fabs(error) <= tolerance)
@@ -111,14 +120,13 @@ void move(double setpoint)
     move_pid.reset();
 }
 
-
 PID revolve_pid_test(KP_REVOLVE_TEST, KI_REVOLVE_TEST, KD_REVOLVE_TEST, LOOP_PERIOD, MAXIMUM_MOTOR_SPEED);
 void revolve_test(double setpoint)
 {
     imu_sensor.tare_rotation(); // 重置IMU传感器的偏航角
     revolve_pid.reset();        // 重置PID控制器
 
-    const double tolerance = 1;    // 允许的误差范围
+    const double tolerance = 1;      // 允许的误差范围
     const int timeout = 5000;        // 超时时间，单位为毫秒
     int start_time = pros::millis(); // 记录开始时间
 

@@ -19,20 +19,17 @@
 #define PNEUMATIC_PORT 'h'
 
 // PID参数
-#define KP_REVOLVE 1.8
+#define KP_REVOLVE 1.4
 #define KI_REVOLVE 0
 #define KD_REVOLVE 0
+#define STABLE_TIME_THRESHOLD 50
 
-#define KP_REVOLVE_TEST 1.3
-#define KI_REVOLVE_TEST 0
-#define KD_REVOLVE_TEST 0
-
-#define KP_MOVE 0.001
+#define KP_MOVE 0.1
 #define KI_MOVE 0
 #define KD_MOVE 0
 
 // loop周期
-#define LOOP_PERIOD 20
+#define LOOP_PERIOD 10
 
 // 最大电机转速
 #define MAXIMUM_MOTOR_SPEED 600

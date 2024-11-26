@@ -1,4 +1,5 @@
 #include "main.h"
+#include "parameter.hpp"
 #include <cmath>
 
 PID::PID(double kp, double ki, double kd, double dt, double max_output)
@@ -63,14 +64,16 @@ void revolve(double setpoint)
     double current_heading = imu_sensor.get_rotation();
     setpoint = setpoint + imu_sensor.get_rotation();
 
-    const double tolerance = 1;      // 允许的误差范围
+    const double tolerance = 0.5;      // 允许的误差范围
     const int timeout = 5000;        // 超时时间，单位为毫秒
     int start_time = pros::millis(); // 记录开始时间
+    int stable_time = 0;
+    const int stable_time_threshold = STABLE_TIME_THRESHOLD;
 
     while (true)
     {
         // 在LCD上打印当前旋转角
-        pros::lcd::print(3, "current_heading: %f", imu_sensor.get_rotation());
+        pros::lcd::print(5, "current_heading: %f", imu_sensor.get_rotation());
 
         // 获取当前旋转角
         current_heading = imu_sensor.get_rotation();
@@ -86,9 +89,19 @@ void revolve(double setpoint)
             error += 360;
         }
 
-        // 如果误差在允许范围内，退出循环
+        // 如果误差在允许范围内，稳定时间加1
         if (fabs(error) <= tolerance)
+        {
+            stable_time ++;
+        }
+        else
+        {
+            stable_time = 0;
+        }
+        if (stable_time >= stable_time_threshold)
+        {
             break;
+        }
 
         // 计算PID控制器输出的速度
         double speed = revolve_pid.compute(setpoint, current_heading);
@@ -97,17 +110,13 @@ void revolve(double setpoint)
         left_wheels.move_velocity(speed);
         right_wheels.move_velocity(-speed);
 
-        // 一些数据
-        pros::lcd::print(4, "Time: %d, Setpoint: %f, Current: %f", pros::millis() - start_time, setpoint,
-                         current_heading);
-        pros::lcd::print(5, "Error: %f, Output: %f", error, speed);
 
         // 检查是否超时
         if (pros::millis() - start_time > timeout)
             break;
 
         // 延时10毫秒
-        pros::delay(10);
+        pros::delay(LOOP_PERIOD);
     }
 
     // 停止电机

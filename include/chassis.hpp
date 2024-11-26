@@ -27,6 +27,3 @@ extern PID move_pid;
 void revolve(double setpoint);
 
 void move(double setpoint);
-
-extern PID revolve_pid_test;
-void revolve_test(double setpoint);

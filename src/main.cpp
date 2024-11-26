@@ -45,7 +45,6 @@ void initialize()
     
 }
 
-pros::Task read_serial_task(read_serial_data);
 
 void disabled()
 {
@@ -75,6 +74,11 @@ void opcontrol()
         if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_X))
         {
             revolve(90);
+        }
+        if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y))
+        {
+            revolve(-180);
+
         }
         pros::lcd::print(5, "current_heading: %f", imu_sensor.get_rotation());
 

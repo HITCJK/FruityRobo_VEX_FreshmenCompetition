@@ -41,10 +41,7 @@ void initialize()
     right_front_wheel.set_encoder_units(pros::E_MOTOR_ENCODER_DEGREES); // 设置编码器单位为度数
     left_rear_wheel.set_encoder_units(pros::E_MOTOR_ENCODER_DEGREES);   // 设置编码器单位为度数
     right_rear_wheel.set_encoder_units(pros::E_MOTOR_ENCODER_DEGREES);  // 设置编码器单位为度数
-
-    
 }
-
 
 void disabled()
 {
@@ -78,9 +75,8 @@ void opcontrol()
         if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y))
         {
             revolve(-180);
-
         }
-        pros::lcd::print(5, "current_heading: %f", imu_sensor.get_rotation());
+        pros::lcd::print(6, "current_heading: %f", imu_sensor.get_rotation());
 
         // ------------------------------- 手柄控制车辆 ------------------------------------
         int power = master.get_analog(ANALOG_LEFT_Y);
@@ -89,11 +85,7 @@ void opcontrol()
         int right = power - turn;
         left_wheels.move(left);
         right_wheels.move(right);
-        // ------------------------------- 数据收集和发送 ------------------------------------
-        printf("current_heading: %f\n", imu_sensor.get_rotation());
-        // ------------------------------- 显示信息 ------------------------------------
-        // pros::lcd::print(1, "pneumatic: %s", pneumatic_state ? "on" : "off");
-        // pros::lcd::print(2, "Lifting: %s", r1_pressed ? "down" : (r2_pressed ? "up" : "stop"));
+
         // ------------------------------- 等待 ------------------------------------
         pros::delay(LOOP_PERIOD);
     }

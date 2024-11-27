@@ -7,6 +7,7 @@ class PID
   public:
     PID(double kp, double ki, double kd, double dt, double max_output);
     double compute(double setpoint, double measured_value);
+    double compute(double error);
     void reset();
 
   private:

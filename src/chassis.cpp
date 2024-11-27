@@ -11,17 +11,13 @@ double PID::compute(double setpoint, double measured_value)
 {
     // 计算误差
     double error = setpoint - measured_value;
+    return PID::compute(error);
+}
 
+double PID::compute(double error)
+{
     // 计算积分
     integral_ += error * dt_;
-    if (integral_ > max_output_)
-    {
-        integral_ = max_output_;
-    }
-    else if (integral_ < -max_output_)
-    {
-        integral_ = -max_output_;
-    }
 
     // 计算微分，应用低通滤波器
     double raw_derivative = (error - previous_error_) / dt_;
@@ -64,16 +60,17 @@ void revolve(double setpoint)
     double current_heading = imu_sensor.get_rotation();
     setpoint = setpoint + imu_sensor.get_rotation();
 
-    const double tolerance = 0.5;      // 允许的误差范围
+    const double tolerance = 0.5;    // 允许的误差范围
     const int timeout = 5000;        // 超时时间，单位为毫秒
     int start_time = pros::millis(); // 记录开始时间
     int stable_time = 0;
     const int stable_time_threshold = STABLE_TIME_THRESHOLD;
+    const int initial_rotation = imu_sensor.get_rotation();
 
     while (true)
     {
         // 在LCD上打印当前旋转角
-        pros::lcd::print(5, "current_heading: %f", imu_sensor.get_rotation());
+        pros::lcd::print(5, "current_heading: %f", imu_sensor.get_rotation() - initial_rotation);
 
         // 获取当前旋转角
         current_heading = imu_sensor.get_rotation();
@@ -92,7 +89,7 @@ void revolve(double setpoint)
         // 如果误差在允许范围内，稳定时间加1
         if (fabs(error) <= tolerance)
         {
-            stable_time ++;
+            stable_time++;
         }
         else
         {
@@ -104,12 +101,11 @@ void revolve(double setpoint)
         }
 
         // 计算PID控制器输出的速度
-        double speed = revolve_pid.compute(setpoint, current_heading);
+        double speed = revolve_pid.compute(error);
 
         // 设置左轮和右轮速度
         left_wheels.move_velocity(speed);
         right_wheels.move_velocity(-speed);
-
 
         // 检查是否超时
         if (pros::millis() - start_time > timeout)

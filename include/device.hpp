@@ -8,6 +8,7 @@ extern pros::Motor left_rear_wheel;
 extern pros::Motor right_rear_wheel;
 extern pros::MotorGroup left_wheels;
 extern pros::MotorGroup right_wheels;
+extern pros::MotorGroup all_wheels;
 
 // 惯性传感器
 extern pros::Imu imu_sensor;

@@ -7,7 +7,7 @@ pros::Motor left_rear_wheel(LEFT_REAR_WHEELS_PORT);
 pros::Motor right_rear_wheel(RIGHT_REAR_WHEELS_PORT);
 pros::MotorGroup left_wheels({left_front_wheel, left_rear_wheel});
 pros::MotorGroup right_wheels({right_front_wheel, right_rear_wheel});
-
+pros::MotorGroup all_wheels({left_front_wheel, right_front_wheel, left_rear_wheel, right_rear_wheel});
 
 // 惯性传感器
 pros::Imu imu_sensor(IMU_PORT);

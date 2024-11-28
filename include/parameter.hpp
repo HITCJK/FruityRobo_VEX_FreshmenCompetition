@@ -24,7 +24,7 @@
 #define KD_REVOLVE 0
 #define STABLE_TIME_THRESHOLD 50
 
-#define KP_MOVE 0.1
+#define KP_MOVE 0.5
 #define KI_MOVE 0
 #define KD_MOVE 0
 
@@ -33,3 +33,9 @@
 
 // 最大电机转速
 #define MAXIMUM_MOTOR_SPEED 600
+
+// 车子的物理参数
+#define WHEEL_DIAMETER 4.0                                                      // 车轮直径
+#define GEAR_RATIO (36.0 / 84.0)                                                // 齿轮比
+#define ENCODER_TICKS_PER_REV 120                                               // 每转编码器的position变化值
+#define DST_TO_POS ENCODER_TICKS_PER_REV / (WHEEL_DIAMETER * M_PI) / GEAR_RATIO // 距离到position的转换系数

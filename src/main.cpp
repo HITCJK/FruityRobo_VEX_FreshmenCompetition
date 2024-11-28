@@ -81,7 +81,7 @@ void opcontrol()
         }
         if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y))
         {
-            move_(50);
+            move(20);
         }
         // ------------------------------- 手柄控制车辆 ------------------------------------
         int power = master.get_analog(ANALOG_LEFT_Y);

@@ -26,7 +26,7 @@
 
 #define KP_MOVE 0.5
 #define KI_MOVE 0
-#define KD_MOVE 0
+#define KD_MOVE (-5)
 
 // loop周期
 #define LOOP_PERIOD 10

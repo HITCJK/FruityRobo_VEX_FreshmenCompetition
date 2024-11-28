@@ -1,4 +1,6 @@
+#include "device.hpp"
 #include "main.h"
+#include "pros/rtos.hpp"
 #include <cmath>
 
 PID::PID(double kp, double ki, double kd, double dt, double max_output)
@@ -118,48 +120,7 @@ void revolve(double setpoint)
     all_wheels.brake();
 }
 
-void move(double target_distance) // 单位：英寸
-{
-    const double initial_left_position = left_front_wheel.get_position();
-    const double initial_right_position = right_front_wheel.get_position();
-    const double target_position = target_distance * DST_TO_POS;
-    double current_position = 0; // 当前距离
-    const double tolerance = 5;
-
-    const int timeout = target_distance * 100; // 超时时间，单位为毫秒，用distance计算
-    const int start_time = pros::millis();     // 记录开始时间
-
-    while (fabs(current_position - target_position) > tolerance)
-    {
-
-        // 设置左右轮速度，调整速度以保持直行
-        double speed = move_pid.compute(target_position, current_position);
-        left_wheels.move_velocity(speed);
-        right_wheels.move_velocity(speed);
-
-        // 更新当前距离
-        current_position = (left_front_wheel.get_position() - initial_left_position + right_front_wheel.get_position() -
-                            initial_right_position) /
-                           2;
-
-        // 在LCD上打印
-        pros::lcd::print(4, "current_distance: %f", current_position / DST_TO_POS);
-
-        // 检查是否超时
-        if (pros::millis() - start_time > timeout)
-        {
-            break;
-            pros::lcd::print(2, "timeout");
-        }
-
-        // 延时10毫秒
-        pros::delay(LOOP_PERIOD);
-    }
-    // 停止电机
-    all_wheels.brake();
-}
-
-void move_(double target_distance)
+void move(double target_distance)
 {
     const double target_position = target_distance * DST_TO_POS;
     const double tolerance = 5;
@@ -172,6 +133,49 @@ void move_(double target_distance)
     {
         pros::delay(5);
     }
-    pros::lcd::print(4, "%d(lf_pos:%1f,ri_pos:%1f)", left_front_wheel.get_encoder_units(),
-                     left_front_wheel.get_position(), right_front_wheel.get_position());
+    
 }
+
+// void move_(double target_distance) // 单位：英寸
+// {
+//     const double initial_left_position = left_front_wheel.get_position();
+//     const double initial_right_position = right_front_wheel.get_position();
+//     const double target_position = target_distance * DST_TO_POS;
+//     double current_position = 0; // 当前距离
+//     const double tolerance = 5;
+
+//     const int timeout = target_distance * 100; // 超时时间，单位为毫秒，用distance计算
+//     const int start_time = pros::millis();     // 记录开始时间
+
+//     while (fabs(current_position - target_position) > tolerance)
+//     {
+//         // 设置左右轮速度
+//         double speed = move_pid.compute(target_position, current_position);
+//         all_wheels.move_velocity(speed);
+//         // if(pros::millis() - start_time > 10)
+//         // {
+//         //     pros::delay(5);
+//         // }
+        
+
+//         // 更新当前距离
+//         current_position = (left_front_wheel.get_position() - initial_left_position + right_front_wheel.get_position() -
+//                             initial_right_position) /
+//                            2;
+
+//         // 在LCD上打印
+//         pros::lcd::print(4, "current_distance: %f", current_position / DST_TO_POS);
+
+//         // 检查是否超时
+//         if (pros::millis() - start_time > timeout)
+//         {
+//             break;
+//             pros::lcd::print(2, "timeout");
+//         }
+
+//         // 延时10毫秒
+//         pros::delay(LOOP_PERIOD);
+//     }
+//     // 停止电机
+//     all_wheels.brake();
+// }

@@ -25,5 +25,5 @@ extern PID revolve_pid;
 extern PID move_pid;
 
 void revolve(double setpoint);
-void move(double distance);
+void move(double distance,int velocity);
 // void move_(double distance);

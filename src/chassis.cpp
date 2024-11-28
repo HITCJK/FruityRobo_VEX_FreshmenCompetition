@@ -120,14 +120,14 @@ void revolve(double setpoint)
     all_wheels.brake();
 }
 
-void move(double target_distance)
+void move(double target_distance,int velocity)
 {
     const double target_position = target_distance * DST_TO_POS;
     const double tolerance = 5;
     const double initial_left_position = left_front_wheel.get_position();
     const double initial_right_position = right_front_wheel.get_position();
 
-    all_wheels.move_relative(target_position, 300);
+    all_wheels.move_relative(target_position, velocity);
     while (fabs(left_front_wheel.get_position() - initial_left_position - target_position) > tolerance &&
            fabs(right_front_wheel.get_position() - initial_right_position - target_position) > tolerance)
     {

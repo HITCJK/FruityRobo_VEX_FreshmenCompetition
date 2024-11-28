@@ -77,11 +77,11 @@ void opcontrol()
         control_pneumatic(l2_pressed);
         if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_X))
         {
-            move(50);
+            move(50,300);
         }
         if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y))
         {
-            move(20);
+            move(20,300);
         }
         // ------------------------------- 手柄控制车辆 ------------------------------------
         int power = master.get_analog(ANALOG_LEFT_Y);

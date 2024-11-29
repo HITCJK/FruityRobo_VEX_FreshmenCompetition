@@ -24,3 +24,51 @@ pros::Motor lifting_motor_2(LIFTING_MOTOR_2_PORT, true);
 
 // 气动结构
 pros::ADIDigitalOut pneumatic(PNEUMATIC_PORT, false);
+
+void picker(PickerState state)
+{
+    switch (state)
+    {
+    case PickerState::INTAKE:
+        picker_motor.move_velocity(MAX_VELOCITY);
+        break;
+    case PickerState::STOP:
+        picker_motor.move_velocity(0);
+        break;
+    case PickerState::REVERSE:
+        picker_motor.move_velocity(-MAX_VELOCITY);
+        break;
+    }
+}
+
+void lifting(LiftingState state)
+{
+    switch (state)
+    {
+    case LiftingState::UP:
+        lifting_motor_1.move_velocity(MAX_VELOCITY);
+        lifting_motor_2.move_velocity(MAX_VELOCITY);
+        break;
+    case LiftingState::DOWN:
+        lifting_motor_1.move_velocity(-MAX_VELOCITY);
+        lifting_motor_2.move_velocity(-MAX_VELOCITY);
+        break;
+    case LiftingState::STOP:
+        lifting_motor_1.move_velocity(0);
+        lifting_motor_2.move_velocity(0);
+        break;
+    }
+}
+
+void clamp(ClampState state)
+{
+    switch (state)
+    {
+    case ClampState::CLAMP:
+        pneumatic.set_value(false);
+        break;
+    case ClampState::UNCLAMP:
+        pneumatic.set_value(true);
+        break;
+    }
+}

@@ -1,7 +1,4 @@
 #include "main.h"
-#include "parameter.hpp"
-
-const int MAX_VELOCITY = 200; // 最大速度（单位：电机最大速度）
 
 // R2 按键控制抬升结构, R1 按键使履带反走
 void control_lifting_and_picking(bool &r1_pressed, bool &r2_pressed)
@@ -12,15 +9,13 @@ void control_lifting_and_picking(bool &r1_pressed, bool &r2_pressed)
 
         if (r2_pressed)
         {
-            picker_motor.move_velocity(MAX_VELOCITY);
-            lifting_motor_1.move_velocity(MAX_VELOCITY);
-            lifting_motor_2.move_velocity(MAX_VELOCITY);
+            picker(PickerState::INTAKE);          // 吃环电机正转
+            lifting(LiftingState::UP);        // 抬升电机正转
         }
         else
         {
-            picker_motor.move_velocity(0);    // 停止电机
-            lifting_motor_1.move_velocity(0); // 停止电机
-            lifting_motor_2.move_velocity(0); // 停止电机
+            picker(PickerState::STOP);         // 吃环电机停止
+            lifting(LiftingState::STOP);      // 抬升电机停止
         }
     }
     if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_R1))
@@ -29,13 +24,11 @@ void control_lifting_and_picking(bool &r1_pressed, bool &r2_pressed)
 
         if (r1_pressed)
         {
-            lifting_motor_1.move_velocity(-MAX_VELOCITY);
-            lifting_motor_2.move_velocity(-MAX_VELOCITY);
+            lifting(LiftingState::DOWN);
         }
         else
         {
-            lifting_motor_1.move_velocity(0); // 停止电机
-            lifting_motor_2.move_velocity(0); // 停止电机
+            lifting(LiftingState::STOP);
         }
     }
 }
@@ -49,11 +42,11 @@ void control_pneumatic(bool &l2_pressed)
 
         if (l2_pressed)
         {
-            pneumatic.set_value(true);
+            clamp(ClampState::CLAMP);
         }
         else
         {
-            pneumatic.set_value(false);
+            clamp(ClampState::UNCLAMP);
         }
     }
 }

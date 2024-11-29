@@ -1,7 +1,5 @@
-#include "device.hpp"
 #include "main.h"
-#include "pros/rtos.hpp"
-#include <cmath>
+
 
 PID::PID(double kp, double ki, double kd, double dt, double max_output)
     : kp_(kp), ki_(ki), kd_(kd), dt_(dt), previous_error_(0.0), integral_(0.0), max_output_(max_output)

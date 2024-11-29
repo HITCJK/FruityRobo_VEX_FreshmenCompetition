@@ -46,6 +46,8 @@ void initialize()
     right_front_wheel.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
     left_rear_wheel.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
     right_rear_wheel.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
+
+    clamp(ClampState::UNCLAMP); // 气动结构解夹
 }
 
 void disabled()

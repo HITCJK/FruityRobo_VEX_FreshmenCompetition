@@ -31,7 +31,9 @@
 // loop周期
 #define LOOP_PERIOD 10
 
-// 最大电机转速
+// 车轮电机：蓝色(600)
+// 其他电机：绿色(200)
+#define MAX_VELOCITY 200
 #define MAXIMUM_MOTOR_SPEED 600
 
 // 车子的物理参数
@@ -39,3 +41,4 @@
 #define GEAR_RATIO (36.0 / 84.0)                                                // 齿轮比
 #define ENCODER_TICKS_PER_REV 120                                               // 每转编码器的position变化值
 #define DST_TO_POS ENCODER_TICKS_PER_REV / (WHEEL_DIAMETER * M_PI) / GEAR_RATIO // 距离到position的转换系数
+

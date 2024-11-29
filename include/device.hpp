@@ -1,6 +1,28 @@
 #pragma once
 #include "main.h"
 
+// 要和使用的函数放在一起
+enum class PickerState
+{
+    INTAKE,
+    STOP,
+    REVERSE
+};
+enum class LiftingState
+{
+    UP,
+    DOWN,
+    STOP
+};
+enum class ClampState
+{
+    CLAMP,
+    UNCLAMP
+};
+extern void picker(PickerState state);
+extern void lifting(LiftingState state);
+extern void clamp(ClampState state);
+
 // 车轮
 extern pros::Motor left_front_wheel;
 extern pros::Motor right_front_wheel;

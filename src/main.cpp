@@ -1,4 +1,8 @@
 #include "main.h"
+#include "chassis.hpp"
+#include "device.hpp"
+#include "parameter.hpp"
+#include <cmath>
 
 // LCD按钮回调函数
 void on_center_button()
@@ -60,13 +64,42 @@ void competition_initialize()
 
 void autonomous()
 {
-    move(20, 300);
+    move(-12, AUTO_SPEED);
+    clamp(ClampState::CLAMP); // 0-1
+    revolve(180);
+    picker(PickerState::INTAKE);
+    lifting(LiftingState::UP);
+
+    move(BLOCK, AUTO_SPEED); // 1-2
+    revolve(-90);
+
+    move(BLOCK * 1.5, AUTO_SPEED); // 2-3
+    revolve(-90);
+    picker(PickerState::STOP);
+    lifting(LiftingState::STOP);
+
+    move(BLOCK * 1.5, AUTO_SPEED); // 3-4
     revolve(90);
-    move(20, 300);
+    clamp(ClampState::UNCLAMP);
+
+    move(BLOCK * 2.5, AUTO_SPEED); // 4-5
+    revolve(-90);
+
+    move(-BLOCK * 0.5, AUTO_SPEED); // 5-6
+    clamp(ClampState::CLAMP);
+    revolve(180);
+    picker(PickerState::INTAKE);
+    lifting(LiftingState::UP);
+
+    move(BLOCK, AUTO_SPEED); // 6-7
     revolve(90);
-    move(20, 300);
-    revolve(90);
-    move(20, 300);
+
+    move(BLOCK, AUTO_SPEED); // 7-8
+    revolve(45);
+
+    move(BLOCK * sqrt(2), AUTO_SPEED); // 8-9
+    picker(PickerState::STOP);
+    lifting(LiftingState::STOP);
 }
 
 // 手动赛模式
@@ -76,27 +109,36 @@ void opcontrol()
     bool r2_pressed = false; // R2 按键状态变量
     bool l1_pressed = false; // L1 按键状态变量
     bool l2_pressed = false; // L2 按键状态变量
+    double left_flag_position = 0;
+    double right_flag_position = 0;
+    double heading_flag = 0;
 
     while (true)
     {
         // ------------------------------- 手柄按钮 ------------------------------------
         control_lifting_and_picking(r1_pressed, r2_pressed);
         control_pneumatic(l2_pressed);
+        if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_L1))
+        {
+            left_flag_position = left_front_wheel.get_position();
+            right_flag_position = right_front_wheel.get_position();
+            heading_flag = imu_sensor.get_rotation();
+        }
         if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_X))
         {
-            move(50, 300);
+
         }
         if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y))
         {
-            move(20, 300);
+
         }
         if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A))
         {
-            revolve(90);
+
         }
         if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_B))
         {
-            autonomous();
+            picker(PickerState::INTAKE, 150);
         }
         // ------------------------------- 手柄控制车辆 ------------------------------------
         int power = master.get_analog(ANALOG_LEFT_Y);
@@ -106,8 +148,11 @@ void opcontrol()
         left_wheels.move(left);
         right_wheels.move(right);
         // ------------------------------- 打印信息 ------------------------------------
-        pros::lcd::print(1, "current_heading: %f", imu_sensor.get_rotation());
-
+        pros::lcd::print(3, "heading from flag: %f", imu_sensor.get_rotation() - heading_flag);
+        pros::lcd::print(4, "distance from flag: %f",
+                         (left_front_wheel.get_position() - left_flag_position + right_front_wheel.get_position() -
+                          right_flag_position) /
+                             2);
         // ------------------------------- 等待 ------------------------------------
         pros::delay(LOOP_PERIOD);
     }

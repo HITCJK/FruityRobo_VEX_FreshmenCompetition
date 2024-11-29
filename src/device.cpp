@@ -41,6 +41,22 @@ void picker(PickerState state)
     }
 }
 
+void picker(PickerState state, int velocity)
+{
+    switch (state)
+    {
+    case PickerState::INTAKE:
+        picker_motor.move_velocity(velocity);
+        break;
+    case PickerState::STOP:
+        picker_motor.move_velocity(0);
+        break;
+    case PickerState::REVERSE:
+        picker_motor.move_velocity(-velocity);
+        break;
+    }
+}
+
 void lifting(LiftingState state)
 {
     switch (state)

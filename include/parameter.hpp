@@ -12,7 +12,7 @@
 #define PICKER_MOTOR_PORT 4
 
 // 抬升、扣环结构
-#define LIFTING_MOTOR_1_PORT 19
+#define LIFTING_MOTOR_1_PORT 20
 #define LIFTING_MOTOR_2_PORT 21
 
 // 气动结构
@@ -41,4 +41,13 @@
 #define GEAR_RATIO (36.0 / 84.0)                                                // 齿轮比
 #define ENCODER_TICKS_PER_REV 120                                               // 每转编码器的position变化值
 #define DST_TO_POS ENCODER_TICKS_PER_REV / (WHEEL_DIAMETER * M_PI) / GEAR_RATIO // 距离到position的转换系数
+#define ROBOT_WIDTH 10.0                                                        // 车宽
+#define ROBOT_LENGTH 10.0                                                       // 车长
 
+// 场地参数
+#define BLOCK 24.0
+
+
+#define AUTO_SPEED 200
+#define AUTO_SPEED_SLOW 100
+#define AUTO_SPEED_FAST 300

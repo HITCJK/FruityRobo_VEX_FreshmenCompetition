@@ -69,7 +69,7 @@ void revolve(double setpoint)
     while (true)
     {
         // 在LCD上打印当前旋转角
-        pros::lcd::print(0, "Heading changed last rev: %2f", imu_sensor.get_rotation() - initial_rotation);
+        // pros::lcd::print(0, "Heading changed last rev: %2f", imu_sensor.get_rotation() - initial_rotation);
 
         // 获取当前旋转角
         current_heading = imu_sensor.get_rotation();
@@ -161,14 +161,11 @@ void move(double target_distance,int velocity)
 //                             initial_right_position) /
 //                            2;
 
-//         // 在LCD上打印
-//         pros::lcd::print(4, "current_distance: %f", current_position / DST_TO_POS);
 
 //         // 检查是否超时
 //         if (pros::millis() - start_time > timeout)
 //         {
 //             break;
-//             pros::lcd::print(2, "timeout");
 //         }
 
 //         // 延时10毫秒

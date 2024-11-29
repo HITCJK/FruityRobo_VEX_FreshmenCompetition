@@ -20,6 +20,7 @@ enum class ClampState
     UNCLAMP
 };
 extern void picker(PickerState state);
+extern void picker(PickerState state, int velocity);
 extern void lifting(LiftingState state);
 extern void clamp(ClampState state);
 

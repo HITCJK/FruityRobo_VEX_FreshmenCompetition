@@ -59,7 +59,7 @@ void revolve(double setpoint)
     double current_heading = imu_sensor.get_rotation();
     setpoint = setpoint + imu_sensor.get_rotation();
 
-    const double tolerance = 0.5;    // 允许的误差范围
+    const double tolerance = 0.8;    // 允许的误差范围
     const int timeout = 5000;        // 超时时间，单位为毫秒
     int start_time = pros::millis(); // 记录开始时间
     int stable_time = 0;

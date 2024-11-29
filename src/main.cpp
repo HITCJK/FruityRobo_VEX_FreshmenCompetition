@@ -27,7 +27,7 @@ void initialize()
     // ------------------------------- 初始化设备 ------------------------------------
     left_wheels.set_reversed(true); // 设置左轮反转
 
-    imu_sensor.reset(); // 重置IMU传感器
+    imu_sensor.reset(true); // 重置IMU传感器
 
     left_front_wheel.tare_position();  // 重置左前电机编码器
     right_front_wheel.tare_position(); // 重置右前电机编码器
@@ -60,13 +60,18 @@ void competition_initialize()
 
 void autonomous()
 {
+    move(20, 300);
+    revolve(90);
+    move(20, 300);
+    revolve(90);
+    move(20, 300);
+    revolve(90);
+    move(20, 300);
 }
 
 // 手动赛模式
 void opcontrol()
 {
-    imu_sensor.reset(); // 重置IMU传感器
-
     bool r1_pressed = false; // R1 按键状态变量
     bool r2_pressed = false; // R2 按键状态变量
     bool l1_pressed = false; // L1 按键状态变量
@@ -79,11 +84,19 @@ void opcontrol()
         control_pneumatic(l2_pressed);
         if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_X))
         {
-            move(50,300);
+            move(50, 300);
         }
         if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y))
         {
-            move(20,300);
+            move(20, 300);
+        }
+        if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A))
+        {
+            revolve(90);
+        }
+        if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_B))
+        {
+            autonomous();
         }
         // ------------------------------- 手柄控制车辆 ------------------------------------
         int power = master.get_analog(ANALOG_LEFT_Y);

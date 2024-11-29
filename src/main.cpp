@@ -64,7 +64,7 @@ void competition_initialize()
 
 void autonomous()
 {
-    move(-12, AUTO_SPEED);
+    move(-13.4, AUTO_SPEED);
     clamp(ClampState::CLAMP); // 0-1
     revolve(180);
     picker(PickerState::INTAKE);
@@ -91,7 +91,7 @@ void autonomous()
     picker(PickerState::INTAKE);
     lifting(LiftingState::UP);
 
-    move(BLOCK, AUTO_SPEED); // 6-7
+    move(BLOCK, AUTO_SPEED); // 6-7hhhhhhhhh
     revolve(90);
 
     move(BLOCK, AUTO_SPEED); // 7-8
@@ -126,19 +126,56 @@ void opcontrol()
         }
         if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_X))
         {
+            move(-13.4, AUTO_SPEED_SLOW - 50);
+            pros::delay(AUTO_DELAY);
+            clamp(ClampState::CLAMP); // 0-1
+            pros::delay(AUTO_DELAY);
+            revolve(180);
+            picker(PickerState::INTAKE);
+            lifting(LiftingState::UP);
 
+            move(BLOCK - 5.5, AUTO_SPEED_SLOW); // 1-2
+            pros::delay(4 * AUTO_DELAY);
+            revolve(-90);
+            pros::delay(AUTO_DELAY);
+
+            move(BLOCK - 3, AUTO_SPEED_SLOW - 30); // 2-3
+            pros::delay(4 * AUTO_DELAY);
+            revolve(-45);
+            pros::delay(AUTO_DELAY);
+
+            move(BLOCK * sqrt(2) - 4, AUTO_SPEED_SLOW - 30); // 3-4
+            pros::delay(4 * AUTO_DELAY);
+            revolve(90);
+            pros::delay(AUTO_DELAY);
+            move(BLOCK * sqrt(2) - 8, AUTO_SPEED_SLOW - 30); // 4-5
+            pros::delay(4 * AUTO_DELAY);
+            clamp(ClampState::UNCLAMP);
+
+            revolve(90);
+            pros::delay(AUTO_DELAY);
+            move(-(BLOCK * sqrt(2) - 6), AUTO_SPEED_SLOW - 30); // 5-6
+            clamp(ClampState::CLAMP);
+            pros::delay(AUTO_DELAY);
+
+            revolve(-45);
+            pros::delay(AUTO_DELAY);
+            move(BLOCK - 5.5, AUTO_SPEED_SLOW - 30); // 6-7
+            pros::delay(4 * AUTO_DELAY);
+            picker(PickerState::STOP);
+            lifting(LiftingState::STOP);
         }
         if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y))
         {
-
+            revolve(180);
         }
         if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A))
         {
-
+            revolve(90);
         }
         if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_B))
         {
-            picker(PickerState::INTAKE, 150);
+            move(BLOCK * 1.5 - 5, AUTO_SPEED_SLOW); // 2-3
         }
         // ------------------------------- 手柄控制车辆 ------------------------------------
         int power = master.get_analog(ANALOG_LEFT_Y);
@@ -152,7 +189,7 @@ void opcontrol()
         pros::lcd::print(4, "distance from flag: %f",
                          (left_front_wheel.get_position() - left_flag_position + right_front_wheel.get_position() -
                           right_flag_position) /
-                             2);
+                             2 / (DST_TO_POS));
         // ------------------------------- 等待 ------------------------------------
         pros::delay(LOOP_PERIOD);
     }

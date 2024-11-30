@@ -24,7 +24,7 @@ void initialize()
 {
     // 初始化LCD屏幕并显示队名
     pros::lcd::initialize();
-    // pros::lcd::set_text(1, "We are the FruityRobo!");
+    pros::lcd::set_text(1, "We are the FruityRobo!");
     // 注册按钮回调函数
     pros::lcd::register_btn1_cb(on_center_button);
 
@@ -64,25 +64,24 @@ void competition_initialize()
 
 void autonomous()
 {
-    int magic = 0;
-    move(-13.4, AUTO_SPEED_SLOW - 50);
-    pros::delay(AUTO_DELAY);
+    int magic = 4;
+    move(-13.4 - magic, AUTO_SPEED_SLOW - 65);
     clamp(ClampState::CLAMP); // 0-1
-    pros::delay(AUTO_DELAY);
+    pros::delay(200);
     revolve(180);
     picker(PickerState::INTAKE);
     lifting(LiftingState::UP);
-    pros::delay(200);
+    pros::delay(AUTO_DELAY * 2);
 
-    move(BLOCK - 5.5, AUTO_SPEED_SLOW); // 1-2
-    pros::delay(3 * AUTO_DELAY);
+    move(BLOCK - 5.5 - magic, AUTO_SPEED_SLOW); // 1-2 // 后退更多，确保扣到桩
+    pros::delay(2 * AUTO_DELAY);
     revolve(-90);
     pros::delay(AUTO_DELAY);
 
     move(BLOCK - 3, AUTO_SPEED_SLOW - 30); // 2-3
     pros::delay(3 * AUTO_DELAY);
     revolve(-45);
-    pros::delay(AUTO_DELAY);
+    pros::delay(AUTO_DELAY);     
 
     move(BLOCK * sqrt(2) - 4, AUTO_SPEED_SLOW - 30); // 3-4
     pros::delay(2 * AUTO_DELAY);
@@ -92,18 +91,18 @@ void autonomous()
     move(BLOCK * sqrt(2) - 8, AUTO_SPEED_SLOW - 30); // 4-5
     pros::delay(3 * AUTO_DELAY);
     lifting(LiftingState::STOP);
-    move(- BLOCK * 1 / 2, AUTO_SPEED_SLOW - 30);
+    move(-BLOCK * 1 / 2, AUTO_SPEED_SLOW - 30);
     clamp(ClampState::UNCLAMP);
-    move(BLOCK * 1 / 2, AUTO_SPEED_SLOW - 30); 
+    move(BLOCK * 1 / 2, AUTO_SPEED_SLOW - 30);
 
     revolve(90);
     pros::delay(AUTO_DELAY);
     magic = 4;
-    move(-(BLOCK * sqrt(2) - 6 + magic), AUTO_SPEED_SLOW - 30); // 5-6 //*
-    clamp(ClampState::CLAMP); 
+    move(-(BLOCK * sqrt(2) - 6 + magic), AUTO_SPEED_SLOW - 30); // 5-6
+    clamp(ClampState::CLAMP);
     lifting(LiftingState::UP);
     pros::delay(100);
-    move(magic,AUTO_SPEED_SLOW - 60); //*
+    move(magic, AUTO_SPEED_SLOW - 60);
     pros::delay(AUTO_DELAY);
 
     revolve(-45);
@@ -128,10 +127,10 @@ void opcontrol()
         // ------------------------------- 手柄按钮 ------------------------------------
         control_lifting_and_picking(r1_pressed, r2_pressed);
         control_pneumatic(l2_pressed);
-        // if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_X))
-        // {
-        //     autonomous();
-        // }
+        if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_X))
+        {
+            autonomous();
+        }
         // ------------------------------- 手柄控制车辆 ------------------------------------
         int power = master.get_analog(ANALOG_LEFT_Y);
         int turn = master.get_analog(ANALOG_RIGHT_X);

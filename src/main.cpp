@@ -80,7 +80,7 @@ void autonomous()
 
     move(BLOCK - 3, AUTO_SPEED_SLOW - 30); // 2-3
     pros::delay(3 * AUTO_DELAY);
-    revolve(-45);
+    revolve(-45 -5);
     pros::delay(AUTO_DELAY);     
 
     move(BLOCK * sqrt(2) - 4, AUTO_SPEED_SLOW - 30); // 3-4

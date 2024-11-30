@@ -67,10 +67,12 @@ void autonomous()
     move(-13.4, AUTO_SPEED_SLOW - 50);
     pros::delay(AUTO_DELAY);
     clamp(ClampState::CLAMP); // 0-1
-    pros::delay(AUTO_DELAY);
-    revolve(180);
+    pros::delay(AUTO_DELAY / 2);
     picker(PickerState::INTAKE);
     lifting(LiftingState::UP);
+    pros::delay(AUTO_DELAY / 2);
+    revolve(180);
+    
 
     move(BLOCK - 5.5, AUTO_SPEED_SLOW); // 1-2
     pros::delay(4 * AUTO_DELAY);

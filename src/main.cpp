@@ -120,10 +120,10 @@ void opcontrol()
         // ------------------------------- 手柄按钮 ------------------------------------
         control_lifting_and_picking(r1_pressed, r2_pressed);
         control_pneumatic(l2_pressed);
-        // if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_X))
-        // {
-        //     autonomous();
-        // }
+        if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_X))
+        {
+            autonomous();
+        }
         // ------------------------------- 手柄控制车辆 ------------------------------------
         int power = master.get_analog(ANALOG_LEFT_Y);
         int turn = master.get_analog(ANALOG_RIGHT_X);

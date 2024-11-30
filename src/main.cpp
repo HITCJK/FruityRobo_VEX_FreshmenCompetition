@@ -81,7 +81,7 @@ void autonomous()
     move(BLOCK - 3, AUTO_SPEED_SLOW - 30); // 2-3
     pros::delay(3 * AUTO_DELAY);
     revolve(-45 -5);
-    pros::delay(AUTO_DELAY);     
+    pros::delay(AUTO_DELAY);      
 
     move(BLOCK * sqrt(2) - 4, AUTO_SPEED_SLOW - 30); // 3-4
     pros::delay(2 * AUTO_DELAY);
@@ -90,25 +90,10 @@ void autonomous()
     pros::delay(AUTO_DELAY);
     move(BLOCK * sqrt(2) - 8, AUTO_SPEED_SLOW - 30); // 4-5
     pros::delay(3 * AUTO_DELAY);
-    lifting(LiftingState::STOP);
-    move(-BLOCK * 1 / 2, AUTO_SPEED_SLOW - 30);
-    clamp(ClampState::UNCLAMP);
-    move(BLOCK * 1 / 2, AUTO_SPEED_SLOW - 30);
-
-    revolve(90);
-    pros::delay(AUTO_DELAY);
-    magic = 4;
-    move(-(BLOCK * sqrt(2) - 6 + magic), AUTO_SPEED_SLOW - 30); // 5-6
-    clamp(ClampState::CLAMP);
-    lifting(LiftingState::UP);
-    pros::delay(100);
-    move(magic, AUTO_SPEED_SLOW - 60);
-    pros::delay(AUTO_DELAY);
 
     revolve(-45);
-    pros::delay(AUTO_DELAY);
-    move(BLOCK - 5.5, AUTO_SPEED_SLOW - 30); // 6-7
-    pros::delay(4 * AUTO_DELAY);
+    move(BLOCK - 3, AUTO_SPEED_SLOW - 30); // 5-6
+    pros::delay(3 * AUTO_DELAY);
 }
 
 // 手动赛模式
